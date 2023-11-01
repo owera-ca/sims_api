@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
-import { SignupDto } from 'src/auth/dto/signup.dto';
+import { Injectable } from '@nestjs/common'
+import { UpdateUserDto } from './dto/update-user.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { User } from './entities/user.entity'
+import { Repository } from 'typeorm'
+import { SignupDto } from 'src/auth/dto/signup.dto'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
@@ -13,11 +13,15 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
   create(createUserDto: SignupDto) {
+    // hash password
+    const hashedPassword = bcrypt.hashSync(createUserDto.password, 12);
+
     const user = new User();
     user.f_name = createUserDto.firstName
     user.l_name = createUserDto.lastName
     user.email = createUserDto.email
-    user.password = createUserDto.password
+    user.password = hashedPassword
+    
     return this.usersRepository.save(user)
   }
 
@@ -26,7 +30,7 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.usersRepository.findOneById(id);
   }
 
   findOneByEmail(email: string) {
