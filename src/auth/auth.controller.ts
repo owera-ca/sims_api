@@ -10,6 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { LoginDto } from './dto/login.dto';
+import { SignupDto } from './dto/signup.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,13 @@ export class AuthController {
   @Post('login')
   signIn(@Body() loginDto: LoginDto) {
     return this.authService.signIn(loginDto.username, loginDto.password);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.CREATED)
+  @Post('signup')
+  signUp(@Body() signupDto: SignupDto) {
+    return this.authService.signUp(signupDto);
   }
 
   @Get('profile')
