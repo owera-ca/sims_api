@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from './entities/user.entity'
@@ -12,16 +12,24 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
-  create(createUserDto: SignupDto) {
+  async create(signupDto: SignupDto) {
+
+    // check if user already exists
+    const userExists = await this.findOneByEmail(signupDto.email)
+    console.log('user exists', userExists)
+    if (userExists) {
+      throw new HttpException('User already exists', 400)
+    }
+
     // hash password
-    const hashedPassword = bcrypt.hashSync(createUserDto.password, 12);
+    const hashedPassword = bcrypt.hashSync(signupDto.password, 12);
 
     const user = new User();
-    user.f_name = createUserDto.firstName
-    user.l_name = createUserDto.lastName
-    user.email = createUserDto.email
+    user.f_name = signupDto.firstName
+    user.l_name = signupDto.lastName
+    user.email = signupDto.email
     user.password = hashedPassword
-    
+
     return this.usersRepository.save(user)
   }
 
@@ -36,7 +44,7 @@ export class UsersService {
   findOneByEmail(email: string) {
     return this.usersRepository.findOne({
       where: {
-        email: email,
+        email
       },
     });
   }

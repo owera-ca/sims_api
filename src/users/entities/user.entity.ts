@@ -55,56 +55,6 @@ export class User extends SiEntity {
     phone: string;
 
     @ApiProperty({
-        description: 'The address of the user',
-        type: String,
-        example: '123 Main St',
-    })
-    @Column({
-        nullable: true
-    })
-    address: string;
-
-    @ApiProperty({
-        description: 'The city of the user',
-        type: String,
-        example: 'Anytown',
-    })
-    @Column({
-        nullable: true
-    })
-    city: string;
-
-    @ApiProperty({
-        description: 'The state of the user',
-        type: String,
-        example: 'CA',
-    })
-    @Column({
-        nullable: true
-    })
-    state: string;
-
-    @ApiProperty({
-        description: 'The zip code of the user',
-        type: String,
-        example: '12345',
-    })
-    @Column({
-        nullable: true
-    })
-    zip: string;
-
-    @ApiProperty({
-        description: 'The country of the user',
-        type: String,
-        example: 'USA',
-    })
-    @Column({
-        nullable: true
-    })
-    country: string;
-
-    @ApiProperty({
         description: 'The flag of the user',
         type: Boolean,
         example: false,

@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Timestamp } from 'typeorm';
 
-@Entity()
 export class SiEntity {
     @ApiProperty({
         description: 'The id of the entity',
