@@ -1,37 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Address } from './entities/address.entity';
-import { Repository } from 'typeorm';
-import { State } from 'src/state/entities/state.entity';
-import { Country } from 'src/country/entities/country.entity';
+import { Injectable } from '@nestjs/common'
+import { CreateAddressDto } from './dto/create-address.dto'
+import { UpdateAddressDto } from './dto/update-address.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Address } from './entities/address.entity'
+import { Repository } from 'typeorm'
+import { State } from 'src/state/entities/state.entity'
+import { Country } from 'src/country/entities/country.entity'
+import { User } from 'src/users/entities/user.entity'
 
 @Injectable()
 export class AddressService {
   constructor(@InjectRepository(Address) private addressRepository: Repository<Address>,
     @InjectRepository(Country) private countryRepository: Repository<Country>,
-    @InjectRepository(State) private stateRepository: Repository<State>
+    @InjectRepository(State) private stateRepository: Repository<State>,
+    @InjectRepository(User) private userRepository: Repository<User>
   ) { }
   async create(createAddressDto: CreateAddressDto) {
     // fetch country by id
-    const country = await this.countryRepository.findOneById(createAddressDto.countryId);
+    const country = await this.countryRepository.findOneById(createAddressDto.countryId)
 
     // fetch state by id
-    const state = await this.stateRepository.findOneById(createAddressDto.stateId);
+    const state = await this.stateRepository.findOneById(createAddressDto.stateId)
+
+    // fetch user by id
+    const user = await this.userRepository.findOneById(createAddressDto.userId)
 
     // create address
-    const address = new Address();
-    address.label = createAddressDto.label;
-    address.isDefault = createAddressDto.isDefault ? createAddressDto.isDefault : false;
-    address.address1 = createAddressDto.address1;
-    address.address2 = createAddressDto.address2;
-    address.city = createAddressDto.city;
-    address.postalCode = createAddressDto.postalCode;
-    address.state = state;
-    address.country = country;
-    address.phone = createAddressDto.phone;
-    return this.addressRepository.save(address);
+    const address = new Address()
+    address.label = createAddressDto.label
+    address.isDefault = createAddressDto.isDefault ? createAddressDto.isDefault : false
+    address.address1 = createAddressDto.address1
+    address.address2 = createAddressDto.address2
+    address.city = createAddressDto.city
+    address.postalCode = createAddressDto.postalCode
+    address.phone = createAddressDto.phone
+    address.state = state
+    address.country = country
+    address.user = user
+    return this.addressRepository.save(address)
   }
 
   findAll() {

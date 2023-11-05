@@ -2,9 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import 'dotenv/config';
+import * as session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(
+    session({
+      secret: 'sinswear-secret-key',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
   const options = new DocumentBuilder()
     .setTitle('SimsWear API')

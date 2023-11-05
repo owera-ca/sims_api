@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { SiEntity } from 'src/common/SiEntity.entity';
 import { Country } from 'src/country/entities/country.entity';
 import { State } from 'src/state/entities/state.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity('address')
@@ -14,7 +15,6 @@ export class Address extends SiEntity {
     @Column({
         length: 100,
         nullable: false,
-        unique: true,
     })
     label: string;
 
@@ -92,4 +92,12 @@ export class Address extends SiEntity {
         length: 15
     })
     phone: string;
+
+    @ApiProperty({
+        description: 'User id',
+        type: Number,
+        example: 1,
+    })
+    @ManyToOne(() => User)
+    user: User;
 }

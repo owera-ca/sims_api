@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Address } from "src/address/entities/address.entity";
 import { SiEntity } from "src/common/SiEntity.entity";
-import { Entity, Column } from "typeorm";
+import { Entity, Column, ManyToOne } from "typeorm";
 
 @Entity('user')
 export class User extends SiEntity {
@@ -12,7 +13,7 @@ export class User extends SiEntity {
     @Column({
         nullable: false
     })
-    f_name: string;
+    fName: string;
 
     @ApiProperty({
         description: 'The last name of the user',
@@ -22,7 +23,7 @@ export class User extends SiEntity {
     @Column({
         nullable: false
     })
-    l_name: string;
+    lName: string;
 
     @ApiProperty({
         description: 'The email of the user',
@@ -63,4 +64,12 @@ export class User extends SiEntity {
         default: 0
     })
     flags: number;
+
+    @ApiProperty({
+        description: 'The default address ID of the user',
+        type: Number,
+        example: 1,
+    })
+    @ManyToOne(() => Address)
+    defaultAddress: Address;
 }

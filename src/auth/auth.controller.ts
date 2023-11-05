@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
   Request,
@@ -19,8 +20,8 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() loginDto: LoginDto) {
-    return this.authService.signIn(loginDto.username, loginDto.password);
+  async signIn(@Body() loginDto: LoginDto, @Request() req) {
+    return this.authService.signIn(loginDto.username, loginDto.password, req);
   }
 
   @Public()
@@ -32,6 +33,16 @@ export class AuthController {
 
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+    console.log('inside getProfile', req.session)
+    if (req.session.user) {
+      return req.session.user
+    }
+    throw new HttpException('Not logged in', 401)
+  }
+
+  @Get('logout')
+  logout(@Request() req) {
+    req.session.destroy()
+    return 'logged out'
   }
 }
