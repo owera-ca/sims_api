@@ -1,16 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Req } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService
+  ) {}
 
   @Post()
   create(@Body() createOrderDto: CreateOrderDto, @Request() req: any) {
-    console.log(req.user);
-    return this.ordersService.create(createOrderDto); 
+    console.log('inside create order', req.user)
+    return createOrderDto;
+    // return this.ordersService.create(createOrderDto, req.session.user.id); 
   }
 
   @Get()

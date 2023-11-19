@@ -8,10 +8,11 @@ import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class OrdersService {
-  constructor(@InjectRepository(Order) private orderRepository: Repository<Order>,
-  @InjectRepository(User) private userRepository: Repository<User>
+  constructor(
+    @InjectRepository(Order) private orderRepository: Repository<Order>,
+    @InjectRepository(User) private userRepository: Repository<User>
   ) { }
-  async create(createOrderDto: CreateOrderDto) {
+  async create(createOrderDto: CreateOrderDto, userId: Number) {
     const order = new Order();
     order.note = createOrderDto.note;
     order.status = createOrderDto.status;
@@ -21,7 +22,7 @@ export class OrdersService {
   }
 
   findAll() {
-    return `This action returns all orders`;
+    return this.orderRepository.find();
   }
 
   findOne(id: number) {

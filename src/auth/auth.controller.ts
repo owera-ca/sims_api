@@ -34,10 +34,11 @@ export class AuthController {
   @Get('profile')
   getProfile(@Request() req) {
     console.log('inside getProfile', req.session)
-    if (req.session.user) {
-      return req.session.user
+    const me = req.session.user
+    if (!me) {
+      throw new HttpException('Not logged in', 401)
     }
-    throw new HttpException('Not logged in', 401)
+    return me
   }
 
   @Get('logout')
