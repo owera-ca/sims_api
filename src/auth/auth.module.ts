@@ -9,6 +9,7 @@ import { UsersService } from '../users/users.service'
 import { User } from 'src/users/entities/user.entity'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Address } from 'src/address/entities/address.entity'
+import { SessionSerializer } from './session.serializer'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { Address } from 'src/address/entities/address.entity'
       useClass: AuthGuard,
     },
     UsersService,
+    SessionSerializer,
   ],
   controllers: [AuthController],
   exports: [AuthService],

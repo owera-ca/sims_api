@@ -11,7 +11,6 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string, @Req() req?: any) {
-    console.log('inside login req is', req)
     const user = await this.usersService.findOneByEmail(email);
     console.log('inside login user is', user)
     if (!user) {

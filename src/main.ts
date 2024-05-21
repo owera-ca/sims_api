@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import 'dotenv/config';
 import * as session from 'express-session';
+import * as passport from "passport";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,9 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
+
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   const options = new DocumentBuilder()
     .setTitle('SimsWear API')

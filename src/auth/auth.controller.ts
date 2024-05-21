@@ -21,7 +21,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() loginDto: LoginDto, @Request() req) {
-    return this.authService.signIn(loginDto.username, loginDto.password, req);
+    console.log('loginDto is', loginDto);
+    return this.authService.signIn(loginDto.email, loginDto.password, req);
   }
 
   @Public()
@@ -33,17 +34,17 @@ export class AuthController {
 
   @Get('profile')
   getProfile(@Request() req) {
-    console.log('inside getProfile', req.session)
-    const me = req.session.user
+    console.log('inside getProfile', req.session);
+    const me = req.session.user;
     if (!me) {
-      throw new HttpException('Not logged in', 401)
+      throw new HttpException('Not logged in', 401);
     }
-    return me
+    return me;
   }
 
   @Get('logout')
   logout(@Request() req) {
-    req.session.destroy()
-    return 'logged out'
+    req.session.destroy();
+    return 'logged out';
   }
 }
